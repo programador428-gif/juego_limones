@@ -60,7 +60,8 @@ function actualizarPantalla() {
     detectarColision();
 }
 
-// Funciones para detectar colisiones
+// Funcion para detectar colisiones
+
 function detectarColision() {
     if (
         limonX + ANCHO_LIMON > personajeX &&
@@ -68,12 +69,20 @@ function detectarColision() {
         limonY + ALTO_LIMON > personajeY &&
         limonY < personajeY + ALTURA_PERSONAJE
     ) {
-        alert("¡Has atrapado el limón!");
+        aparecerLimon();
     }
 }
+
+function aparecerLimon() {
+    limonX = generarAleatorio(0, canvas.width - ANCHO_LIMON);
+    limonY = 0;
+    actualizarPantalla();
+}
+
 // Funcion para empezar el juego
 function iniciarJuego() {
     dibujarSuelo();
     dibujarPersonaje();
+    aparecerLimon();
     dibujarLimon();
 }
