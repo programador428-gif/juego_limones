@@ -1,3 +1,8 @@
 function generarAleatorio(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+function mostrarMensajeSpan(id, mensaje) {
+    let componente = document.getElementById(id);
+    componente.textContent = mensaje;
+}

@@ -11,6 +11,8 @@ let personajeX = canvas.width / 2 - ANCHO_PERSONAJE / 2;
 let personajeY = canvas.height - ALTURA_SUELO - ALTURA_PERSONAJE;
 let limonX = canvas.width / 2 - ANCHO_LIMON / 2;
 let limonY = 0;
+let puntaje = 0;
+let vidas = 3;
 
 /* --Funciones en General-- */
 
@@ -57,18 +59,29 @@ function actualizarPantalla() {
     dibujarSuelo();
     dibujarPersonaje();
     dibujarLimon();
-    detectarColision();
+    detectarColisiones();
 }
 
 // Funcion para detectar colisiones
 
-function detectarColision() {
+function detectarColisiones() {
+    // Colision entre el limon y el personaje
     if (
         limonX + ANCHO_LIMON > personajeX &&
         limonX < personajeX + ANCHO_PERSONAJE &&
         limonY + ALTO_LIMON > personajeY &&
         limonY < personajeY + ALTURA_PERSONAJE
     ) {
+        puntaje++;
+        mostrarMensajeSpan("txtPuntaje", puntaje);
+        aparecerLimon();
+    }
+    // Colision entre el limon y el suelo
+    if ( // Agregue aqui mismo ya que se ahorra codigo ;)
+        limonY + ALTO_LIMON > canvas.height - ALTURA_SUELO
+    ) {
+        vidas--;
+        mostrarMensajeSpan("txtVidas", vidas);
         aparecerLimon();
     }
 }
