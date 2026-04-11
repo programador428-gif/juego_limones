@@ -83,6 +83,7 @@ function detectarColisiones() {
         }
         if (puntaje >= 10) {
             alert("¡Felicidades! Has ganado el juego");
+            clearInterval(intervalo);
             reiniciarJuego();
         }
         aparecerLimon();
@@ -118,10 +119,10 @@ function reiniciarJuego() {
 }
 
 function iniciarJuego() {
-    setInterval(
+    let intervalo = setInterval(
         bajarLimon
         , velocidadCaida
-    )
+    );
     dibujarSuelo();
     dibujarPersonaje();
     aparecerLimon();
