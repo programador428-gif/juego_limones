@@ -6,7 +6,6 @@ const ALTURA_PERSONAJE = 60;
 const ANCHO_PERSONAJE = 40;
 const ALTO_LIMON = 20;
 const ANCHO_LIMON = 20;
-const VELOCIDAD = 250;
 
 let personajeX = canvas.width / 2 - ANCHO_PERSONAJE / 2;
 let personajeY = canvas.height - ALTURA_SUELO - ALTURA_PERSONAJE;
@@ -14,6 +13,7 @@ let limonX = canvas.width / 2 - ANCHO_LIMON / 2;
 let limonY = 0;
 let puntaje = 0;
 let vidas = 3;
+let velocidadCaida = 200;
 
 /* --Funciones en General-- */
 
@@ -41,12 +41,12 @@ function borrarCanvas() {
 // Funciones para mover los elementos
 
 function moverIzquierda() {
-    personajeX -= 10;
+    personajeX -= 20;
     actualizarPantalla();
 }
 
 function moverDerecha() {
-    personajeX += 10;
+    personajeX += 20;
     actualizarPantalla();
 }
 
@@ -75,6 +75,16 @@ function detectarColisiones() {
     ) {
         puntaje++;
         mostrarMensajeSpan("txtPuntaje", puntaje);
+        if (puntaje >= 3) {
+            velocidadCaida = 150;
+        }
+        if (puntaje >= 6) {
+            velocidadCaida = 100;
+        }
+        if (puntaje >= 10) {
+            alert("¡Felicidades! Has ganado el juego");
+            reiniciarJuego();
+        }
         aparecerLimon();
     }
     // Colision entre el limon y el suelo
@@ -85,10 +95,7 @@ function detectarColisiones() {
         mostrarMensajeSpan("txtVidas", vidas);
         if (vidas === 0) {
             alert("¡Juego Terminado! Tu puntaje final es: " + puntaje);
-            puntaje = 0;
-            vidas = 3;
-            mostrarMensajeSpan("txtPuntaje", puntaje);
-            mostrarMensajeSpan("txtVidas", vidas);
+            reiniciarJuego();
         }
         aparecerLimon();
     }
@@ -100,11 +107,20 @@ function aparecerLimon() {
     actualizarPantalla();
 }
 
-// Funcion para empezar el juego
+// Funcion para empezar o reiniciar el juego
+function reiniciarJuego() {
+    puntaje = 0;
+    vidas = 3;
+    velocidadCaida = 200;
+    mostrarMensajeSpan("txtPuntaje", puntaje);
+    mostrarMensajeSpan("txtVidas", vidas);
+    iniciarJuego();
+}
+
 function iniciarJuego() {
     setInterval(
         bajarLimon
-        , VELOCIDAD
+        , velocidadCaida
     )
     dibujarSuelo();
     dibujarPersonaje();
