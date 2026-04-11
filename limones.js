@@ -27,6 +27,11 @@ function moverIzquierda() {
     actualizarJuego();
 }
 
+function moverDerecha() {
+    personajeX += 10;
+    actualizarJuego();
+}
+
 function actualizarJuego() {
     borrarCanvas();
     dibujarPersonaje();
