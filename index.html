@@ -1,57 +1,56 @@
 <!doctype html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Caza Estrellas - El Huerto</title>
-    <link rel="stylesheet" href="limones.css" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap"
-      rel="stylesheet"
-    />
-  </head>
 
-  <body onload="iniciarJuego()">
-    <div class="contenedor-principal">
-      <header>
-        <h1>🍋 Atrapa los Limones</h1>
-        <p class="tagline">¡Aprovecha lo que el cielo te da!</p>
-      </header>
+<head>
+  <meta charset="UTF-8" />
+  <title>Caza Estrellas - El Huerto</title>
+  <link rel="stylesheet" href="limones.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet" />
+</head>
 
-      <div class="juego-card">
-        <canvas id="areaJuego" width="600" height="400"></canvas>
+<body onload="iniciarJuego()">
+  <div class="contenedor-principal">
+    <header>
+      <h1>🍋 Atrapa los Limones</h1>
+      <p class="tagline">¡Aprovecha lo que el cielo te da!</p>
+    </header>
 
-        <div class="interfaz-usuario">
-          <div class="stat">
-            <span class="label">Puntaje</span>
-            <span id="txtPuntaje" class="valor">0</span>
-          </div>
-          <div class="stat">
-            <span class="label">Vidas</span>
-            <span id="txtVidas" class="valor">3</span>
-          </div>
+    <div class="juego-card">
+      <canvas id="areaJuego" width="600" height="400"></canvas>
+
+      <div class="interfaz-usuario">
+        <div class="stat">
+          <span class="label">Puntaje</span>
+          <span id="txtPuntaje" class="valor">0</span>
         </div>
-
-        <div class="controles">
-          <button class="btn btn-flecha" onclick="moverIzquierda()">
-            <strong>←</strong>
-          </button>
-          </button>
-          <button class="btn btn-flecha" onclick="moverDerecha()">
-            <strong>→</strong>
-          </button>
-        </div>
-
-        <div class="footer-controles">
-          <button class="btn btn-reiniciar" onclick="reiniciarJuego()">
-            Nuevo Inicio
-          </button>
+        <div class="stat">
+          <span class="label">Vidas</span>
+          <span id="txtVidas" class="valor">3</span>
         </div>
       </div>
 
-      <p class="firma">Cultivado por: <strong>Dilan Solorzano</strong></p>
+      <div class="controles">
+        <button class="btn btn-flecha" onclick="moverIzquierda()">
+          <strong>←</strong>
+        </button>
+        </button>
+        <button class="btn btn-flecha" onclick="moverDerecha()">
+          <strong>→</strong>
+        </button>
+      </div>
+
+      <div class="footer-controles">
+        <button class="btn btn-reiniciar" onclick="reiniciarJuego()">
+          Nuevo Inicio
+        </button>
+      </div>
     </div>
 
-    <script src="limones.js"></script>
-    <script src="utils.js"></script>
-  </body>
+    <p class="firma">Cultivado por: <strong>Dilan Solorzano</strong></p>
+  </div>
+
+  <script src="utils.js"></script>
+  <script src="limones.js"></script>
+</body>
+
 </html>

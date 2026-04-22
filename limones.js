@@ -1,17 +1,31 @@
 // CONFIGURACIÓN Y VARIABLES GLOBALES
-let canvas = document.getElementById("areaJuego");
+let canvas = $("areaJuego");
 let ctx = canvas.getContext("2d");
 
-const ALTURA_SUELO = 40;
-const ALTURA_PERSONAJE = 60;
-const ANCHO_PERSONAJE = 40;
-const ALTO_LIMON = 20;
-const ANCHO_LIMON = 20;
+class Entidad {
+    constructor(ancho, altura, x = 0, y = 0) {
+        this.ancho = ancho;
+        this.altura = altura;
+        this.x = x;
+        this.y = y;
+    }
+}
 
-let personajeX = canvas.width / 2 - ANCHO_PERSONAJE / 2;
-let personajeY = canvas.height - ALTURA_SUELO - ALTURA_PERSONAJE;
-let limonX = canvas.width / 2 - ANCHO_LIMON / 2;
-let limonY = 0;
+const SUELO = new Entidad(canvas.width, 40);
+const PERSONAJE = new Entidad(
+    40,
+    60,
+    canvas.width / 2 - 40 / 2,
+    canvas.height - SUELO.altura - 60
+);
+
+const LIMON = new Entidad(
+    20,
+    20,
+    canvas.width / 2 - 20 / 2,
+    0
+);
+
 
 let puntaje = 0;
 let vidas = 3;
