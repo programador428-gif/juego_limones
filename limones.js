@@ -1,4 +1,3 @@
-// CONFIGURACIÓN Y VARIABLES GLOBALES
 let canvas = $("areaJuego");
 let ctx = canvas.getContext("2d");
 
@@ -9,135 +8,104 @@ class Entidad {
         this.x = x;
         this.y = y;
     }
+
+    tocaA(otra) {
+        return colRectRect(
+            { x: this.x, y: this.y, w: this.ancho, h: this.altura },
+            { x: otra.x, y: otra.y, w: otra.ancho, h: otra.altura }
+        );
+    }
 }
 
-const SUELO = new Entidad(canvas.width, 40);
-const PERSONAJE = new Entidad(
-    40,
-    60,
-    canvas.width / 2 - 40 / 2,
-    canvas.height - SUELO.altura - 60
-);
-
-const LIMON = new Entidad(
-    20,
-    20,
-    canvas.width / 2 - 20 / 2,
-    0
-);
-
+const SUELO = new Entidad(canvas.width, 40, 0, canvas.height - 40);
+const PERSONAJE = new Entidad(40, 60, canvas.width / 2 - 20, canvas.height - 40 - 60);
+const LIMON = new Entidad(20, 20, canvas.width / 2 - 10, 0);
 
 let puntaje = 0;
 let vidas = 3;
 let velocidadCaida = 200;
 let intervalo;
 
-// FUNCIONES DE DIBUJO
-function dibujarSuelo() {
-    ctx.fillStyle = "green";
-    ctx.fillRect(0, canvas.height - ALTURA_SUELO, canvas.width, ALTURA_SUELO);
-}
-
-function dibujarPersonaje() {
-    ctx.fillStyle = "#fbc18c";
-    ctx.fillRect(personajeX, personajeY, ANCHO_PERSONAJE, ALTURA_PERSONAJE);
-}
-
-function dibujarLimon() {
-    ctx.fillStyle = "yellow";
-    ctx.fillRect(limonX, limonY, ANCHO_LIMON, ALTO_LIMON);
-}
-
-function borrarCanvas() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-}
-
 function actualizarPantalla() {
-    borrarCanvas();
-    dibujarSuelo();
-    dibujarPersonaje();
-    dibujarLimon();
+    limpiarCanvas(ctx);
+    ctxColor(ctx, "green");
+    dibujarRect(ctx, SUELO.x, SUELO.y, SUELO.ancho, SUELO.altura);
+
+    ctxColor(ctx, "#fbc18c");
+    dibujarRect(ctx, PERSONAJE.x, PERSONAJE.y, PERSONAJE.ancho, PERSONAJE.altura);
+
+    ctxColor(ctx, "yellow");
+    dibujarRect(ctx, LIMON.x, LIMON.y, LIMON.ancho, LIMON.altura);
+
     detectarColisiones();
 }
 
-// FUNCIONES DE MOVIMIENTO Y LÓGICA
 function moverIzquierda() {
-    personajeX -= 20;
+    PERSONAJE.x -= 20;
     actualizarPantalla();
 }
 
 function moverDerecha() {
-    personajeX += 20;
+    PERSONAJE.x += 20;
     actualizarPantalla();
 }
 
 function bajarLimon() {
-    limonY += 20;
+    LIMON.y += 20;
     actualizarPantalla();
 }
 
 function aparecerLimon() {
-    limonX = generarAleatorio(0, canvas.width - ANCHO_LIMON);
-    limonY = 0;
+    LIMON.x = enteroAleatorio(0, canvas.width - LIMON.ancho);
+    LIMON.y = 0;
     actualizarPantalla();
 }
 
-// SISTEMA DE COLISIONES Y ESTADO DEL JUEGO
-
 function detectarColisiones() {
-    // Colision entre el limon y el personaje
-    if (
-        limonX + ANCHO_LIMON > personajeX &&
-        limonX < personajeX + ANCHO_PERSONAJE &&
-        limonY + ALTO_LIMON > personajeY &&
-        limonY < personajeY + ALTURA_PERSONAJE
-    ) {
+    if (LIMON.tocaA(PERSONAJE)) {
         puntaje++;
-        mostrarMensajeSpan("txtPuntaje", puntaje);
+        sonidoClick();
+        texto($("#txtPuntaje"), puntaje);
 
-        // Dificultad incremental
         if (puntaje >= 3) velocidadCaida = 150;
         if (puntaje >= 6) velocidadCaida = 100;
 
         if (puntaje >= 10) {
+            vibrarExito();
             alert(`¡Felicidades! Has ganado con ${vidas} vidas restantes.`);
-            clearInterval(intervalo);
+            detenerIntervalo(intervalo);
             reiniciarJuego();
         }
         aparecerLimon();
     }
 
-    // Colision entre el limon y el suelo
-    if (limonY + ALTO_LIMON > canvas.height - ALTURA_SUELO) {
+    if (LIMON.tocaA(SUELO)) {
         vidas--;
-        mostrarMensajeSpan("txtVidas", vidas);
+        beep(200, 0.1, 'sawtooth');
+        texto($("#txtVidas"), vidas);
 
         if (vidas === 0) {
             alert(`¡Juego Terminado! Tu puntaje final es: ${puntaje}`);
-            clearInterval(intervalo);
+            detenerIntervalo(intervalo);
             reiniciarJuego();
         }
         aparecerLimon();
     }
 }
-
-// INICIO Y REINICIO DEL JUEGO
 
 function reiniciarJuego() {
     puntaje = 0;
     vidas = 3;
     velocidadCaida = 200;
-    personajeX = canvas.width / 2 - ANCHO_PERSONAJE / 2;
-    mostrarMensajeSpan("txtPuntaje", puntaje);
-    mostrarMensajeSpan("txtVidas", vidas);
+    PERSONAJE.x = canvas.width / 2 - PERSONAJE.ancho / 2;
+    texto($("#txtPuntaje"), puntaje);
+    texto($("#txtVidas"), vidas);
     iniciarJuego();
 }
 
 function iniciarJuego() {
-    if (intervalo) clearInterval(intervalo);
+    if (intervalo) detenerIntervalo(intervalo);
     intervalo = setInterval(bajarLimon, velocidadCaida);
-
-    dibujarSuelo();
-    dibujarPersonaje();
+    actualizarPantalla();
     aparecerLimon();
 }
