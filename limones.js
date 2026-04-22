@@ -41,12 +41,16 @@ function actualizarPantalla() {
 }
 
 function moverIzquierda() {
-    PERSONAJE.x -= 20;
+    if (PERSONAJE.x > 0) {
+        PERSONAJE.x -= 20;
+    }
     actualizarPantalla();
 }
 
 function moverDerecha() {
-    PERSONAJE.x += 20;
+    if (PERSONAJE.x + PERSONAJE.ancho < canvas.width) {
+        PERSONAJE.x += 20;
+    }
     actualizarPantalla();
 }
 
@@ -54,6 +58,21 @@ function bajarLimon() {
     LIMON.y += 20;
     actualizarPantalla();
 }
+
+evento(window, "keydown", (e) => {
+    if (e.key === "ArrowLeft" || e.key === "a") {
+        if (PERSONAJE.x > 0) {
+            PERSONAJE.x -= 20;
+        }
+    }
+    else if (e.key === "ArrowRight" || e.key === "d") {
+        if (PERSONAJE.x + PERSONAJE.ancho < canvas.width) {
+            PERSONAJE.x += 20;
+        }
+    }
+
+    actualizarPantalla();
+});
 
 function aparecerLimon() {
     LIMON.x = enteroAleatorio(0, canvas.width - LIMON.ancho);
