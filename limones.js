@@ -1,4 +1,4 @@
-let canvas = $("areaJuego");
+let canvas = $("#areaJuego");
 let ctx = canvas.getContext("2d");
 
 class Entidad {
